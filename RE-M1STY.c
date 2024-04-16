@@ -129,34 +129,32 @@ void updateHwnd(HWND *phwnd, RECT *prect, uchar *palpha) {
 }
 
 void doMainLoop() {
-	uchar __incOpacity[2] = {VK_MENU, getKey('+')};
-	uchar __decOpacity[2] = {VK_MENU, getKey('-')};
-	uchar __setOpacity0[2] = {VK_MENU, getKey('0')};
-	uchar __setOpacity1[2] = {VK_MENU, getKey('1')};
-	uchar __setOpacity8[2] = {VK_MENU, getKey('8')};
-	uchar __setOpacity9[2] = {VK_MENU, getKey('9')};
-	uchar __setWindowR[2] = {VK_MENU, VK_RIGHT};
-	uchar __setWindowL[2] = {VK_MENU, VK_LEFT};
-	uchar __setWindowD[2] = {VK_MENU, VK_DOWN};
-	uchar __setWindowU[2] = {VK_MENU, VK_UP};
-	uchar __hideWindow[2] = {VK_MENU, getKey('\\')};
-	uchar __toggleClick[2] = {VK_MENU, getKey('[')};
-	uchar __toggleTop[2] = {VK_MENU, getKey(']')};
-	uchar __exitLoop[2] = {VK_MENU, VK_BACK};
+	uchar __incOpacity[3]  = {VK_MENU, getKey('N'), getKey('+')};
+	uchar __decOpacity[3]  = {VK_MENU, getKey('N'), getKey('-')};
+	uchar __setOpacity0[3] = {VK_MENU, getKey('N'), getKey('0')};
+	uchar __setOpacity1[3] = {VK_MENU, getKey('N'), getKey('1')};
+	uchar __setOpacity8[3] = {VK_MENU, getKey('N'), getKey('8')};
+	uchar __setOpacity9[3] = {VK_MENU, getKey('N'), getKey('9')};
+	uchar __setWindowR[3]  = {VK_MENU, getKey('N'), VK_RIGHT};
+	uchar __setWindowL[3]  = {VK_MENU, getKey('N'), VK_LEFT};
+	uchar __setWindowD[3]  = {VK_MENU, getKey('N'), VK_DOWN};
+	uchar __setWindowU[3]  = {VK_MENU, getKey('N'), VK_UP};
+	uchar __hideWindow[3]  = {VK_MENU, getKey('N'), getKey('\\')};
+	uchar __toggleClick[3] = {VK_MENU, getKey('N'), getKey('[')};
+	uchar __toggleTop[3]   = {VK_MENU, getKey('N'), getKey(']')};
+	uchar __exitLoop[3]    = {VK_MENU, getKey('N'), VK_BACK};
 
 	HWND hwnd;
 	RECT rect;
 	uchar alpha;
 	for(; 1; Sleep(1)) {
-		if(ifKeyDownMul(__incOpacity, 2)) {
-			printf("< alpha: %u\n", alpha);
+		if(ifKeyDownMul(__incOpacity, sizeof(__incOpacity))) {
 			updateHwnd(&hwnd, &rect, &alpha);
-			printf("> alpha: %u\n", alpha);
 			alpha = umin(255, alpha + 1);
 			setHwndAlpha(hwnd, alpha);
 			clock_t st = clock();
 			uchar talpha = alpha;
-			while(ifKeyDownMul(__incOpacity, 2)) {
+			while(ifKeyDownMul(__incOpacity, sizeof(__incOpacity))) {
 				clock_t ed = clock();
 				if(getDeltaTime(st, ed) >= limitTime) {
 					int cnt = (getDeltaTime(st, ed) - limitTime) / gapTimeAlpha;
@@ -165,13 +163,13 @@ void doMainLoop() {
 				}
 			}
 		}
-		if(ifKeyDownMul(__decOpacity, 2)) {
+		if(ifKeyDownMul(__decOpacity, sizeof(__decOpacity))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			alpha = umax(1, alpha - 1);
 			setHwndAlpha(hwnd, alpha);
 			clock_t st = clock();
 			uchar talpha = alpha;
-			while(ifKeyDownMul(__decOpacity, 2)) {
+			while(ifKeyDownMul(__decOpacity, sizeof(__decOpacity))) {
 				clock_t ed = clock();
 				if(getDeltaTime(st, ed) >= limitTime) {
 					int cnt = (getDeltaTime(st, ed) - limitTime) / gapTimeAlpha;
@@ -180,33 +178,33 @@ void doMainLoop() {
 				}
 			}
 		}
-		if(ifKeyDownMul(__setOpacity0, 2)) {
+		if(ifKeyDownMul(__setOpacity0, sizeof(__setOpacity0))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			alpha = 1;
 			setHwndAlpha(hwnd, alpha);
 		}
-		if(ifKeyDownMul(__setOpacity1, 2)) {
+		if(ifKeyDownMul(__setOpacity1, sizeof(__setOpacity1))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			alpha = 30;
 			setHwndAlpha(hwnd, alpha);
 		}
-		if(ifKeyDownMul(__setOpacity8, 2)) {
+		if(ifKeyDownMul(__setOpacity8, sizeof(__setOpacity8))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			alpha = 225;
 			setHwndAlpha(hwnd, alpha);
 		}
-		if(ifKeyDownMul(__setOpacity9, 2)) {
+		if(ifKeyDownMul(__setOpacity9, sizeof(__setOpacity9))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			alpha = 255;
 			setHwndAlpha(hwnd, alpha);
 		}
-		if(ifKeyDownMul(__setWindowR, 2)) {
+		if(ifKeyDownMul(__setWindowR, sizeof(__setWindowR))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			rect.right = imax(rect.left + 10, rect.right + 1);
 			setHwndPos(hwnd, rect);
 			clock_t st = clock();
 			int tr = rect.right;
-			while(ifKeyDownMul(__setWindowR, 2)) {
+			while(ifKeyDownMul(__setWindowR, sizeof(__setWindowR))) {
 				clock_t ed = clock();
 				if(getDeltaTime(st, ed) >= limitTime) {
 					int cnt = (getDeltaTime(st, ed) - limitTime) / gapTimeHwnd;
@@ -215,13 +213,13 @@ void doMainLoop() {
 				}
 			}
 		}
-		if(ifKeyDownMul(__setWindowL, 2)) {
+		if(ifKeyDownMul(__setWindowL, sizeof(__setWindowL))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			rect.right = imax(rect.left + 10, rect.right - 1);
 			setHwndPos(hwnd, rect);
 			clock_t st = clock();
 			int tr = rect.right;
-			while(ifKeyDownMul(__setWindowL, 2)) {
+			while(ifKeyDownMul(__setWindowL, sizeof(__setWindowL))) {
 				clock_t ed = clock();
 				if(getDeltaTime(st, ed) >= limitTime) {
 					int cnt = (getDeltaTime(st, ed) - limitTime) / gapTimeHwnd;
@@ -230,13 +228,13 @@ void doMainLoop() {
 				}
 			}
 		}
-		if(ifKeyDownMul(__setWindowD, 2)) {
+		if(ifKeyDownMul(__setWindowD, sizeof(__setWindowD))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			rect.bottom = imax(rect.top + 10, rect.bottom + 1);
 			setHwndPos(hwnd, rect);
 			clock_t st = clock();
 			int tr = rect.bottom;
-			while(ifKeyDownMul(__setWindowD, 2)) {
+			while(ifKeyDownMul(__setWindowD, sizeof(__setWindowD))) {
 				clock_t ed = clock();
 				if(getDeltaTime(st, ed) >= limitTime) {
 					int cnt = (getDeltaTime(st, ed) - limitTime) / gapTimeHwnd;
@@ -245,13 +243,13 @@ void doMainLoop() {
 				}
 			}
 		}
-		if(ifKeyDownMul(__setWindowU, 2)) {
+		if(ifKeyDownMul(__setWindowU, sizeof(__setWindowU))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			rect.bottom = imax(rect.top + 10, rect.bottom - 1);
 			setHwndPos(hwnd, rect);
 			clock_t st = clock();
 			int tr = rect.bottom;
-			while(ifKeyDownMul(__setWindowU, 2)) {
+			while(ifKeyDownMul(__setWindowU, sizeof(__setWindowU))) {
 				clock_t ed = clock();
 				if(getDeltaTime(st, ed) >= limitTime) {
 					int cnt = (getDeltaTime(st, ed) - limitTime) / gapTimeHwnd;
@@ -260,43 +258,43 @@ void doMainLoop() {
 				}
 			}
 		}
-		if(ifKeyDownMul(__hideWindow, 2)) {
+		if(ifKeyDownMul(__hideWindow, sizeof(__hideWindow))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			ShowWindow(hwnd, 0);
 			DWORD dwExStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
 			SetWindowLong(hwnd, GWL_EXSTYLE, (dwExStyle | WS_EX_TOOLWINDOW) & WS_EX_APPWINDOW);
-			waitKeyUpMul(__hideWindow, 2);
+			waitKeyUpMul(__hideWindow, sizeof(__hideWindow));
 		}
-		if(ifKeyDownMul(__toggleClick, 2)) {
+		if(ifKeyDownMul(__toggleClick, sizeof(__toggleClick))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			DWORD dwExStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
 			SetWindowLong(hwnd, GWL_EXSTYLE, dwExStyle ^ 0x20L);
-			waitKeyUpMul(__toggleClick, 2);
+			waitKeyUpMul(__toggleClick, sizeof(__toggleClick));
 		}
-		if(ifKeyDownMul(__toggleTop, 2)) {
+		if(ifKeyDownMul(__toggleTop, sizeof(__toggleTop))) {
 			updateHwnd(&hwnd, &rect, &alpha);
 			if(GetWindowLong(hwnd, GWL_EXSTYLE) & WS_EX_TOPMOST) {
 				SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 			}else{
 				SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 			}
-			waitKeyUpMul(__toggleTop, 2);
+			waitKeyUpMul(__toggleTop, sizeof(__toggleTop));
 		}
-		if(ifKeyDownMul(__exitLoop, 2)) {
+		if(ifKeyDownMul(__exitLoop, sizeof(__exitLoop))) {
 			return;
 		}
 	}
 }
 
 void printHelp() {
-	puts("Press Alt + Num { 0, 1, 8, 9 } to Set Opacity.\n");
-	puts("Press Alt + { + } / { - } to Increase / Decrease Opacity.\n");
-	puts("Press Alt + { Arrow Keys } to Resize.\n");
-	puts("Press Alt + { [ } to Toggle Clicking Through the Window.\n");
-	puts("Press Alt + { ] } to Toggle Always-on-Top.\n");
-	puts("Press Alt + { \\ } to Hide a Window.");
+	puts("Press Alt + { N } + Num { 0, 1, 8, 9 } to Set Opacity.\n");
+	puts("Press Alt + { N } + { + } / { - } to Increase / Decrease Opacity.\n");
+	puts("Press Alt + { N } + { Arrow Keys } to Resize.\n");
+	puts("Press Alt + { N } + { [ } to Toggle Clicking Through the Window.\n");
+	puts("Press Alt + { N } + { ] } to Toggle Always-on-Top.\n");
+	puts("Press Alt + { N } + { \\ } to Hide a Window.");
 	puts(" >> Once Hidden, It Can't be Shown Again.\n");
-	puts("Press Alt + Backspace to Exit.\n");
+	puts("Press Alt + { N } + Backspace to Exit.\n");
 }
 
 
